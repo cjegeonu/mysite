@@ -17,17 +17,16 @@ function register () {
     // Get all our input fields
     email = document.getElementById('email').value
     password = document.getElementById('password').value
-    full_name = document.getElementById('full_name').value
-    favorite_song = document.getElementById('favorite_song').value
-    milk_before_cereal = document.getElementById('milk_before_cereal').value
-
-    // Validate input fields
+    username = document.getElementById('username').value
+  
+    console.log("runnign")
+    // // Validate input fields
     if (validate_email(email) == false || validate_password(password) == false) {
         alert('Email or password is incorrect.')
         return 
         // Don't continue running the code
-}
-    if (validate_field(full_name) == false || validate_field(favorite_song) == false || validate_field(milk_before_cereal) == false) {
+    }
+    if (validate_field(username) == false) {
         alert('One or more extra fields are incorrect.')    
         return
     }
@@ -35,8 +34,8 @@ function register () {
     // Move on with Auth
     auth.createUserWithEmailAndPassword(email, password)
     .then(function() {  
-      
-        var user = auth.currentuser
+      console.log("here")
+        var user = auth.currentUser
 
         // Add this user to Firebase database 
         var database_ref = database.ref()
@@ -44,26 +43,34 @@ function register () {
         // Create user data 
         var user_data = {
             email :email,
-            full_name : full_name,
-            favorite_song : favorite_song,
-            milk_before_cereal : milk_before_cereal,
+            username : username,
             last_login : Date.now()
         }
 
-        database_ref.child('users/' + userß.uid).set(user_data)
-
-
-        alert('User Created!')
+        database_ref.child('users/' + user.uid).set(user_data)
+        .then(function() {
+            alert('User Created!')  
+        })
+        .catch(function(error) {
+            console.log("failed")
+            // Firebase will use this to alert of its errors
+            var error_code = error.code
+            var error_message = error.message 
+    
+            alert(error_message, " - ", error_code);
+        })
 
     })
     .catch(function(error) {
+        console.log("failed")
         // Firebase will use this to alert of its errors
         var error_code = error.code
         var error_message = error.message 
 
-        alert(error_message)
+        alert(error_message, " : ", error_code);
     })
 
+}
 
 function  validate_email(email) {
     expression = /^[^@]+@\w+(\.\w+)+\w$/
@@ -95,4 +102,5 @@ function validate_field(field) {
     } else { 
         return true 
     }
-}}
+}
+
