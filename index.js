@@ -19,14 +19,14 @@ function register () {
     password = document.getElementById('password').value
     username = document.getElementById('username').value
   
-    console.log("runnign")
+    console.log("running")
     // // Validate input fields
     if (validate_email(email) == false || validate_password(password) == false) {
         alert('Email or password is incorrect.')
         return 
         // Don't continue running the code
     }
-    if (validate_field(username) == false) {
+    if (validate_email(email) == false) {
         alert('One or more extra fields are incorrect.')    
         return
     }
@@ -72,6 +72,48 @@ function register () {
 
 }
 
+// Login function
+function login () {
+    // Get all our input fields
+    email = document.getElementById('email').value
+    password = document.getElementById('password').value
+
+    // Validate input fields
+    if (validate_email(email) == false || validate_password(password) == false) {
+        alert('Email or password is incorrect.')
+        return 
+        // Don't continue running the code
+    }
+    
+    auth.signInWithEmailAndPassword(email, password)
+    .then(function() {
+        var user = auth.currentUser
+    
+        // Add this user to Firebase database 
+        var database_ref = database.ref()
+
+        // Create user data 
+        var user_data = {
+            last_login : Date.now()
+        }
+    
+    // Push to Firebase Database
+    database_ref.child('users/' + user.uid).update(user_data)
+
+    // Done
+    alert('User Logged In!')
+
+  })
+  .catch(function(error) {
+    // Firebase will use this to alert of its errors
+    var error_code = error.code
+    var error_message = error.message
+
+    alert(error_message)
+  })
+}
+
+// Validating function
 function  validate_email(email) {
     expression = /^[^@]+@\w+(\.\w+)+\w$/
     if (expression.test(email) == true) {
@@ -92,15 +134,14 @@ function validate_password(password) {
     }
 }
 
-function validate_field(field) {
-    if (field == null) { 
+function validate_username(username) {
+    if (username == null) { 
         return false
     }
 
-    if (field.length <= 0) {
+    if (username.length <= 0) {
         return false 
     } else { 
         return true 
-    }
-}
+    }}
 
