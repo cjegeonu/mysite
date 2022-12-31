@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Post Data to Firebase</title>
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <link  rel="stylesheet" href="post.css">
+    </head>
+    <body>
+        <div class="hero">
+            <div class="form-box">
+            <div id="container">
+
+                <div id="title_container">
+
+                    <form id="subject" class="input-group">
+                        <input placeholder="subject" type="text" id="subject"/>
+                    </form>
+                    
+                    <form id="body" class="input-group">
+                        <input placeholder="Body" type="text" id="body"/>
+                    </form>
+                </div>
+
+                <div id="button_container">
+                    <button id="post" onclick="save()"> Post </button>
+                    <!-- <button id="post" onclick="get()"> View </button>
+                    <button id="post" onclick="remove()"> Remove </button> -->
+                </div>
+
+                </div>
+        </div>
+    </body>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
+    <script src="post.js"></script>
+
+</html>
